@@ -4,9 +4,9 @@ EXE=main
 all: bitvector.o wavelet_tree.o main.o
 	${GCC} bitvector.o wavelet_tree.o main.o -o ${EXE}
 
-wtree.o: vector.c
+wtree.o: wtree.c
 	${GCC} -c wtree.c
-wtree.test: vector.o vector_test.c
+wtree.test: wtree.o wtree_test.c
 	${GCC} wtree_test.c -o runtest
 	./runtest
 	rm runtest
