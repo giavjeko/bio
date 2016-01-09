@@ -65,13 +65,13 @@ void test_bwt_transform() {
 }
 
 int main(void) {
-  printf("Running tests on bwt module\n");
+  printf("Bwt module running tests\n");
   test_bwt_rotate_left();
   test_bwt_generate_rotations();
   test_bwt_compare();
   test_bwt_sort_strings();
   test_bwt_get_last_column();
   test_bwt_transform();
-  printf("All tests passed\n");
+  printf("Bwt module all tests passed\n");
   return 0;
 }
