@@ -61,7 +61,7 @@ int compare(const void *a, const void *b){
   return ( *(char*)a - *(char*)b );
 }
 
-int isLeaf(char *abc){
+int wtree_is_leaf(char *abc){
   if (strlen(abc) == 1) return 1;
   else return 0;
 }
@@ -74,7 +74,7 @@ Atom *wtree_generate(char *node_abc){
   new_abc = (char *) malloc((strlen(node_abc) + 1) * sizeof(char));
   strcpy(new_abc,node_abc);
   root->abc = new_abc;
-  if (!isLeaf(node_abc)){
+  if (!wtree_is_leaf(node_abc)){
     root->bitvector = bitvector_construct(100);
     half1 = (char *) malloc((strlen(node_abc)- strlen(node_abc)/2 + 1) * sizeof(char));
     half2 = (char *) malloc((strlen(node_abc)/2 + 1) * sizeof(char));
@@ -99,7 +99,7 @@ void *wtree_tostring(Atom *wtree, int depth, char **out){
   if (depth == 0) *out = (char *) malloc( (strlen(wtree->abc)+2) * sizeof(char));
   else *out = (char *) realloc(*out, (strlen(*out) + strlen(wtree->abc)+2+depth) * sizeof(char));
   
- if (!isLeaf(wtree->abc)){    
+ if (!wtree_is_leaf(wtree->abc)){    
     for (i = 0; i < depth; i++) strcat(*out,"-");
     if (depth == 0) strcpy(*out,wtree->abc);
     else strcat(*out,wtree->abc);
@@ -143,7 +143,7 @@ Atom *wtree_construct(char *string, int length) {
 int wtree_push(Atom *wtree, char ch){
   Atom *next = wtree;
   
-  while(!isLeaf(next->abc)){
+  while(!wtree_is_leaf(next->abc)){
     if (strchr(wtree->left->abc,ch) != NULL){
       bitvector_push(wtree->bitvector,(Bit)0);
       next = wtree->left;
