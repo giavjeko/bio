@@ -64,7 +64,7 @@ int compare(const void *a, const void *b){
 Atom *wtree_generate(char *node_abc){
   char *half1, *half2, *new_abc;
   Atom *root;
-  
+
   root = (Atom *) malloc(sizeof(Atom));
   new_abc = (char *) malloc((strlen(node_abc) + 1) * sizeof(char));
   strcpy(new_abc,node_abc);
@@ -90,13 +90,14 @@ Atom *wtree_generate(char *node_abc){
 
 void *wtree_tostring(Atom *wtree, int depth, char **out){
   int i = 0;
-  
+
   if (depth == 0) *out = (char *) malloc( (strlen(wtree->abc)+2) * sizeof(char));
   else *out = (char *) realloc(*out, (strlen(*out) + strlen(wtree->abc)+2+depth) * sizeof(char));
   
  if (strlen(wtree->abc) != 1){    
     for (i = 0; i < depth; i++) strcat(*out,"-");
-    strcat(*out,wtree->abc);
+    if (depth == 0) strcpy(*out,wtree->abc);
+    else strcat(*out,wtree->abc);
     strcat(*out,"\n");
     wtree_tostring(wtree->left,depth+1,out);
     wtree_tostring(wtree->right,depth+1,out);
@@ -109,12 +110,12 @@ void *wtree_tostring(Atom *wtree, int depth, char **out){
   }
 }
 
-void *wtree_construct(char *string, int length) {
+void wtree_construct(char *string, int length) {
+            
   int i = 0;
   char *wtree_string;
   Vector *vector = vector_construct();
   Atom *wtree;
-
   while (i < length){
     if (strchr(vector->data,string[i]) == NULL) {
       vector_push(vector,string[i]);
@@ -122,9 +123,10 @@ void *wtree_construct(char *string, int length) {
     i++;      
   } 
 
-  qsort(vector->data,vector->len,sizeof(char),compare);
-  
+  qsort(vector->data,vector->full,sizeof(char),compare);
+
   wtree = wtree_generate(vector->data);
+
   wtree_tostring(wtree,0,&wtree_string);
   printf("%s\n",wtree_string);   
   
@@ -133,7 +135,7 @@ void *wtree_construct(char *string, int length) {
 }
 
 int main(){
-wtree_construct("bbbxff",6);
+wtree_construct("bbhfbb",6);
 
 return 1;    
 }
