@@ -69,6 +69,11 @@ void test_bitvector_tostring() {
   populate_bitvector(bitvector);
   char* string = bitvector_tostring(bitvector);
   assert(! strcmp(string, data));
+
+  bitvector = bitvector_construct();
+  string = bitvector_tostring(bitvector);
+  assert(! strcmp(string, ""));
+
   printf("Bitvector to string OK\n");
 }
 

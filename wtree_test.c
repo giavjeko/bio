@@ -112,9 +112,24 @@ void test_wtree_push() {
   for (i = 0; i < strlen(string); i++) {
     wtree_push(wtree, string[i]);
   }
-  char* bla;
-  wtree_tostring(wtree, 0, &bla);
-  printf("%s\n", bla);
+  assert(! strcmp(bitvector_tostring(wtree->bitvector), "001011100001"));
+  assert(! strcmp(bitvector_tostring(wtree->left->bitvector), "0100110"));
+  assert(! strcmp(bitvector_tostring(wtree->right->bitvector), "10001"));
+
+  alphabet = "$_aelnp";
+  string = "nle_pl$nnlleee_eaae";
+  wtree = wtree_construct(alphabet, strlen(alphabet));
+  for (i = 0; i < strlen(string); i++) {
+    wtree_push(wtree, string[i]);
+  }
+  assert(! strcmp(bitvector_tostring(wtree->bitvector), "1100110111100000000"));
+  assert(! strcmp(bitvector_tostring(wtree->left->bitvector), "10011101111"));
+  assert(! strcmp(bitvector_tostring(wtree->left->left->bitvector), "101"));
+  assert(! strcmp(bitvector_tostring(wtree->left->right->bitvector), "11111001"));
+  assert(! strcmp(bitvector_tostring(wtree->right->bitvector), "00100000"));
+  assert(! strcmp(bitvector_tostring(wtree->right->left->bitvector), "1001100"));
+
+printf("\twtree_push test passed\n");
 }
 
 int main(void) {
