@@ -7,7 +7,7 @@ typedef struct at Atom;
 struct at {
   char* abc;
   Bitvector* bitvector;
-  Atom* left; 
+  Atom* left;
   Atom* right;
 };
 
@@ -52,8 +52,8 @@ void wtree_tostring(Atom *wtree, int depth, char **out){
 
   if (depth == 0) *out = (char *) malloc( (strlen(wtree->abc)+2) * sizeof(char));
   else *out = (char *) realloc(*out, (strlen(*out) + strlen(wtree->abc)+2+depth) * sizeof(char));
-  
- if (!wtree_is_leaf(wtree)){    
+
+  if (!wtree_is_leaf(wtree)) {
     for (i = 0; i < depth; i++) strcat(*out,"-");
     if (depth == 0) strcpy(*out,wtree->abc);
     else strcat(*out,wtree->abc);
@@ -61,7 +61,7 @@ void wtree_tostring(Atom *wtree, int depth, char **out){
     wtree_tostring(wtree->left,depth+1,out);
     wtree_tostring(wtree->right,depth+1,out);
   }
-  else{ 
+  else {
     *out = (char *) realloc(*out, (strlen(*out) + strlen(wtree->abc)+2+depth) * sizeof(char));
     for (i = 0; i < depth; i++) strcat(*out,"-");
     if (depth == 0) strcpy(*out,wtree->abc);
@@ -71,16 +71,13 @@ void wtree_tostring(Atom *wtree, int depth, char **out){
 }
 
 void wtree_push(Atom *wtree, char ch){
-  Atom *next = wtree;
-  
-  while(!wtree_is_leaf(next)){
-    if (strchr(wtree->left->abc,ch) != NULL){
-      bitvector_push(wtree->bitvector,(Bit)0);
-      next = wtree->left;
-    }
-    else{
-      bitvector_push(wtree->bitvector,(Bit)1);
-      next = wtree->right;
+  while (! wtree_is_leaf(wtree)) {
+    if (strchr(wtree->left->abc, ch) != NULL) {
+      bitvector_push(wtree->bitvector, (Bit)0);
+      wtree = wtree->left;
+    } else {
+      bitvector_push(wtree->bitvector, (Bit)1);
+      wtree = wtree->right;
     }
   }
 }

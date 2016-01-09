@@ -14,9 +14,10 @@ void test_wtree_compare() {
 }
 
 void test_wtree_construct() {
-  char *alphabet = "abcde";
+  char *alphabet;
   Atom* wtree;
 
+  alphabet = "abcde";
   wtree = wtree_construct(alphabet, strlen(alphabet));
   assert(!strcmp(wtree->abc, "abcde"));
   assert(!strcmp(wtree->left->abc, "abc"));
@@ -32,7 +33,8 @@ void test_wtree_construct() {
   assert(wtree_is_leaf(wtree->right->left));
   assert(wtree_is_leaf(wtree->right->right));
 
-  wtree = wtree_construct("abc");
+  alphabet="abc";
+  wtree = wtree_construct(alphabet, strlen(alphabet));
   assert(!strcmp(wtree->abc,"abc"));
   assert(!strcmp(wtree->left->abc,"ab"));
   assert(!strcmp(wtree->left->left->abc,"a"));
@@ -43,7 +45,8 @@ void test_wtree_construct() {
   assert(wtree->right->left==NULL);
   assert(wtree->right->right==NULL);
 
-  wtree = wtree_construct("abcgmz");
+  alphabet="abcgmz";
+  wtree = wtree_construct(alphabet, strlen(alphabet));
   assert(!strcmp(wtree->abc,"abcgmz"));
   assert(!strcmp(wtree->left->abc,"abc"));
   assert(!strcmp(wtree->left->left->abc,"ab"));
@@ -57,44 +60,61 @@ void test_wtree_construct() {
   assert(wtree->right->left->right->right==NULL);
   assert(wtree->right->right->right==NULL);
 
-  wtree = wtree_construct("1");
+  alphabet="1";
+  wtree = wtree_construct(alphabet, strlen(alphabet));
   assert(!strcmp(wtree->abc,"1"));
   assert(wtree->left==NULL);
   assert(wtree->right==NULL);
 
-  wtree = wtree_construct(" %/$");
+  alphabet=" %/$";
+  wtree = wtree_construct(alphabet, strlen(alphabet));
   assert(!strcmp(wtree->abc," %/$"));
   assert(!strcmp(wtree->left->abc," %"));
   assert(!strcmp(wtree->right->abc,"/$"));
   assert(wtree->left->left->left==NULL);
   assert(wtree->right->right->left==NULL);
 
-  printf("\twtree_generate test passed\n");
+  printf("\twtree_construct test passed\n");
 }
 
 void test_wtree_tostring() {
-  Atom *root;
-  char *tmp;
+  Atom *wtree;
+  char *tmp, *alphabet;
 
-  root = wtree_generate("a");
-  wtree_tostring(root,0,&tmp);
+  alphabet="a";
+  wtree = wtree_construct(alphabet, strlen(alphabet));
+  wtree_tostring(wtree,0,&tmp);
   assert(!strcmp(tmp,"a\n"));
 
-  root = wtree_generate("ab");
-  wtree_tostring(root,0,&tmp);
+  alphabet="ab";
+  wtree = wtree_construct(alphabet, strlen(alphabet));
+  wtree_tostring(wtree,0,&tmp);
   assert(!strcmp(tmp,"ab\n-a\n-b\n"));
 
-  root = wtree_generate("agv");
-  wtree_tostring(root,0,&tmp);
+  alphabet="agv";
+  wtree = wtree_construct(alphabet, strlen(alphabet));
+  wtree_tostring(wtree,0,&tmp);
   assert(!strcmp(tmp,"agv\n-ag\n--a\n--g\n-v\n"));
 
-  root = wtree_generate("abcgimz");
-  wtree_tostring(root,0,&tmp);
+  alphabet="abcgimz";
+  wtree = wtree_construct(alphabet, strlen(alphabet));
+  wtree_tostring(wtree,0,&tmp);
   assert(!strcmp(tmp,"abcgimz\n-abcg\n--ab\n---a\n---b\n--cg\n---c\n---g\n-imz\n--im\n---i\n---m\n--z\n"));
 
+  printf("\twtree_tostring test passed\n");
 }
 
 void test_wtree_push() {
+  char* alphabet = "abcd";
+  Atom* wtree = wtree_construct(alphabet, strlen(alphabet));
+  char* string = "abdacccabbad";
+  int i;
+  for (i = 0; i < strlen(string); i++) {
+    wtree_push(wtree, string[i]);
+  }
+  char* bla;
+  wtree_tostring(wtree, 0, &bla);
+  printf("%s\n", bla);
 }
 
 int main(void) {
@@ -104,6 +124,5 @@ int main(void) {
   test_wtree_tostring();
   test_wtree_push();
   printf("Wtree module all tests passed\n");
-  system("PAUSE");
   return 0;
 }
