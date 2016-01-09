@@ -64,7 +64,8 @@ void wtree_tostring(Atom *wtree, int depth, char **out){
   else{ 
     *out = (char *) realloc(*out, (strlen(*out) + strlen(wtree->abc)+2+depth) * sizeof(char));
     for (i = 0; i < depth; i++) strcat(*out,"-");
-    strcat(*out,wtree->abc);
+    if (depth == 0) strcpy(*out,wtree->abc);
+    else strcat(*out,wtree->abc);
     strcat(*out,"\n");
   }
 }
