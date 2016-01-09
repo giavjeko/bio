@@ -93,7 +93,7 @@ Atom *wtree_generate(char *node_abc){
   return root;
 }
 
-void *wtree_tostring(Atom *wtree, int depth, char **out){
+void wtree_tostring(Atom *wtree, int depth, char **out){
   int i = 0;
 
   if (depth == 0) *out = (char *) malloc( (strlen(wtree->abc)+2) * sizeof(char));
@@ -110,7 +110,8 @@ void *wtree_tostring(Atom *wtree, int depth, char **out){
   else{ 
     *out = (char *) realloc(*out, (strlen(*out) + strlen(wtree->abc)+2+depth) * sizeof(char));
     for (i = 0; i < depth; i++) strcat(*out,"-");
-    strcat(*out,wtree->abc);
+    if (depth == 0) strcpy(*out,wtree->abc);
+    else strcat(*out,wtree->abc);
     strcat(*out,"\n");
   }
 }
@@ -140,7 +141,7 @@ Atom *wtree_construct(char *string, int length) {
   return wtree; 
 }
 
-int wtree_push(Atom *wtree, char ch){
+void wtree_push(Atom *wtree, char ch){
   Atom *next = wtree;
   
   while(!wtree_is_leaf(next->abc)){
