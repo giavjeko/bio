@@ -1,42 +1,38 @@
 GCC=gcc -Wall
 EXE=main
 
-all: bitvector.o wavelet_tree.o main.o
-	${GCC} bitvector.o wavelet_tree.o main.o -o ${EXE}
+all: vector bitvector bwt wtree
+#	${GCC} bitvector wavelet_tree main -o ${EXE}
 
-wtree.o: wtree.c
+test: vector.test bitvector.test bwt.test wtree.test
+
+wtree: wtree.c
 	${GCC} -c wtree.c
-wtree.test: wtree.o wtree_test.c
+wtree.test: wtree wtree_test.c
 	${GCC} wtree_test.c -o runtest
 	./runtest
 	rm runtest
 
-vector.o: vector.c
+vector: vector.c
 	${GCC} -c vector.c
-vector.test: vector.o vector_test.c
+vector.test: vector vector_test.c
 	${GCC} vector_test.c -o runtest
 	./runtest
 	rm runtest
 
-bitvector.o: bitvector.c
+bitvector: bitvector.c
 	${GCC} -c bitvector.c
-bitvector.test: bitvector.o bitvector_test.c
+bitvector.test: bitvector bitvector_test.c
 	${GCC} bitvector_test.c -o runtest
 	./runtest
 	rm runtest
 
-bwt.o: bwt.c
+bwt: bwt.c
 	${GCC} -c bwt.c
-bwt.test: bwt.o bwt_test.c
+bwt.test: bwt bwt_test.c
 	${GCC} bwt_test.c -o runtest
 	./runtest
 	rm runtest
 
-wavelet_tree.o: wavelet_tree.c
-	${GCC} -c wavelet_tree.c
-
-main.o: main.c
-	${GCC} -c main.c
-
 clean:
-	rm *.o ${EXE}
+	rm *.o
