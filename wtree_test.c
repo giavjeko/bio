@@ -83,23 +83,23 @@ void test_wtree_tostring() {
 
   alphabet="a";
   wtree = wtree_construct(alphabet, strlen(alphabet));
-  wtree_tostring(wtree,0,&tmp);
+  tmp = wtree_tostring(wtree);
   assert(!strcmp(tmp,"a\n"));
 
   alphabet="ab";
   wtree = wtree_construct(alphabet, strlen(alphabet));
-  wtree_tostring(wtree,0,&tmp);
-  assert(!strcmp(tmp,"ab\n-a\n-b\n"));
+  tmp = wtree_tostring(wtree);
+  assert(!strcmp(tmp,"ab_\n-a\n-b\n"));
 
   alphabet="agv";
   wtree = wtree_construct(alphabet, strlen(alphabet));
-  wtree_tostring(wtree,0,&tmp);
-  assert(!strcmp(tmp,"agv\n-ag\n--a\n--g\n-v\n"));
+  tmp = wtree_tostring(wtree);
+  assert(!strcmp(tmp,"agv_\n-ag_\n--a\n--g\n-v\n"));
 
   alphabet="abcgimz";
   wtree = wtree_construct(alphabet, strlen(alphabet));
-  wtree_tostring(wtree,0,&tmp);
-  assert(!strcmp(tmp,"abcgimz\n-abcg\n--ab\n---a\n---b\n--cg\n---c\n---g\n-imz\n--im\n---i\n---m\n--z\n"));
+  tmp = wtree_tostring(wtree);
+  assert(!strcmp(tmp,"abcgimz_\n-abcg_\n--ab_\n---a\n---b\n--cg_\n---c\n---g\n-imz_\n--im_\n---i\n---m\n--z\n"));
 
   printf("\twtree_tostring test passed\n");
 }
@@ -129,7 +129,7 @@ void test_wtree_push() {
   assert(! strcmp(bitvector_tostring(wtree->right->bitvector), "00100000"));
   assert(! strcmp(bitvector_tostring(wtree->right->left->bitvector), "1001100"));
 
-printf("\twtree_push test passed\n");
+  printf("\twtree_push test passed\n");
 }
 
 int main(void) {
@@ -139,5 +139,6 @@ int main(void) {
   test_wtree_tostring();
   test_wtree_push();
   printf("Wtree module all tests passed\n");
+  system("PAUSE");
   return 0;
 }
