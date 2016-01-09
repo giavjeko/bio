@@ -57,7 +57,7 @@ void *vector_push(Vector *vector, char ch){
   }
 }
 
-int compare(const void *a, const void *b){
+int wtree_compare(const void *a, const void *b){
   return ( *(char*)a - *(char*)b );
 }
 
@@ -128,7 +128,7 @@ Atom *wtree_construct(char *string, int length) {
     i++;      
   } 
 
-  qsort(vector->data,vector->full,sizeof(char),compare);
+  qsort(vector->data,vector->full,sizeof(char),wtree_compare);
 
   wtree = wtree_generate(vector->data);
 
