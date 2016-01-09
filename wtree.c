@@ -1,13 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
+#include "vector.c"
 #include "bitvector.c"
-
-/*typedef struct Bitvector Bitvector;
-struct Bitvector {
-  Word* data;
-  int length;
-};*/
-
 
 typedef struct at Atom;
 struct at {
@@ -16,46 +10,6 @@ struct at {
   Atom *left; 
   Atom *right;
 };
-
-typedef struct Vector Vector;
-struct Vector {
-  int len;
-  int full;
-  char *data;
-  };
-
-Vector *vector_construct(){
-  Vector *vector;
-  char *new_data;
-  if ((vector = (Vector *) malloc(sizeof(Vector))) == NULL) 
-    return 0;
-  if ((new_data = (char *) malloc(2*sizeof(char))) == NULL) 
-    return 0;
-  new_data[0] = 0;
-  new_data[1] = 0;
-  vector->len = 1;
-  vector->full = 0;
-  vector->data = new_data;
-  return vector;
-}
-
-void *vector_push(Vector *vector, char ch){
-  char *new_data;
-  if (vector->len == vector->full){
-    if ((new_data = (char *) realloc(vector->data, (vector->len*2+1)*sizeof(char))) == NULL) 
-      return 0;
-    new_data[vector->full] = ch;
-    vector->len *= 2;
-    vector->full++;
-    new_data[vector->full] = 0;
-    vector->data = new_data;
-  }
-  else{
-    vector->data[vector->full] = ch;
-    vector->full++;
-    vector->data[vector->full] = 0;
-  }
-}
 
 int compare(const void *a, const void *b){
   return ( *(char*)a - *(char*)b );
