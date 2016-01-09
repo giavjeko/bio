@@ -1,18 +1,36 @@
 #include <string.h>
 #include <stdlib.h>
-#include "bitvector.h"
+
+typedef char Bit;
+typedef unsigned long long Word;
+typedef struct Bitvector Bitvector;
+struct Bitvector {
+  Word* data;
+  int length, capacity;
+};
 
 int bitvector_get_word_length() {
   return sizeof(Word) * 8;
 }
 
-Bitvector* bitvector_construct(int length) {
+Bitvector* bitvector_construct() {
   int word_length = bitvector_get_word_length();
-  int word_count = length / word_length + (length % word_length) ? 1 : 0;
   Bitvector* bitvector = (Bitvector*)malloc(sizeof(Bitvector));
-  bitvector->data = (Word*)malloc(word_count * sizeof(Word));
   bitvector->length = 0;
+  bitvector->capacity = word_length;
+  bitvector->data = (Word*)malloc(sizeof(Word));
   return bitvector;
+}
+
+int bitvector_is_full(Bitvector* bitvector) {
+  return bitvector->length == bitvector->capacity;
+}
+
+void bitvector_expand(Bitvector* bitvector) {
+  int word_length = bitvector_get_word_length();
+  bitvector->capacity *= 2;
+  int word_count = bitvector->capacity / word_length;
+  bitvector->data = (Word*)realloc(bitvector->data, word_count * sizeof(Word));
 }
 
 void bitvector_push(Bitvector* bitvector, Bit bit) {
@@ -21,6 +39,9 @@ void bitvector_push(Bitvector* bitvector, Bit bit) {
   bitvector->data[current_word_index] <<= 1;
   bitvector->data[current_word_index] |= (Word)(bit ? 1 : 0);
   bitvector->length++;
+  if (bitvector_is_full(bitvector)) {
+    bitvector_expand(bitvector);
+  }
 }
 
 char* bitvector_word_tostring(Word* word, int length) {
