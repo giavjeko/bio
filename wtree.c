@@ -87,9 +87,3 @@ void wtree_construct(char *string, int length) {
   printf("%s",vector->data); 
   system("PAUSE");  
 }
-
-int main(){
-wtree_construct("bbhfbb",6);
-
-return 1;    
-}
