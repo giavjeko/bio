@@ -8,6 +8,7 @@ void bwt_rotate_left(const char* src, char* dst, int len) {
     dst[i - 1] = src[i];
   }
   dst[len - 1] = src[0];
+  dst[len] = 0;
 }
 
 void bwt_generate_rotations(const char* src, char** dst, int len) {
