@@ -52,6 +52,7 @@ char* bitvector_word_tostring(Word* word, int length) {
     result[length - i - 1] = (*word & mask) ? '1' : '0';
     mask <<= 1;
   }
+  result[length] = 0;
   return result;
 }
 
@@ -59,6 +60,7 @@ char* bitvector_tostring(Bitvector* bitvector) {
   int word_length = bitvector_get_word_length();
   int current_word_index = bitvector->length / word_length;
   char* result = (char*)malloc(bitvector->length * sizeof(char) + 1);
+  result[0] = 0;
   int i;
   for (i = 0; i <= current_word_index; i++) {
     int word_usage = (i < current_word_index) ? word_length : bitvector->length % word_length;
