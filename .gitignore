@@ -1,2 +1,8 @@
 # Vim swapfile
 *.swp
+
+# Binaries
+*.o
+
+# Main executable
+main
