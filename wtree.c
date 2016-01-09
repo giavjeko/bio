@@ -25,9 +25,10 @@ Atom* wtree_construct(char* alphabet, int len) {
   strcpy(node->abc, alphabet);
   int left_len = len - len / 2;
   int right_len = len / 2;
+  
+  node->bitvector = bitvector_construct();
 
   if (len > 1) {
-    node->bitvector = bitvector_construct();
     char* left_alphabet = (char*)malloc((left_len + 1) * sizeof(char));
     char* right_alphabet = (char*)malloc((right_len + 1) * sizeof(char));
 
@@ -47,27 +48,49 @@ Atom* wtree_construct(char* alphabet, int len) {
   return node;
 }
 
-void wtree_tostring(Atom *wtree, int depth, char **out){
-  int i = 0;
-
-  if (depth == 0) *out = (char *) malloc( (strlen(wtree->abc)+2) * sizeof(char));
-  else *out = (char *) realloc(*out, (strlen(*out) + strlen(wtree->abc)+2+depth) * sizeof(char));
-
-  if (!wtree_is_leaf(wtree)) {
-    for (i = 0; i < depth; i++) strcat(*out,"-");
-    if (depth == 0) strcpy(*out,wtree->abc);
-    else strcat(*out,wtree->abc);
-    strcat(*out,"\n");
-    wtree_tostring(wtree->left,depth+1,out);
-    wtree_tostring(wtree->right,depth+1,out);
+char *wtree_node_tostring(Atom *wtree) {
+  char *out;
+  char *bvstr;
+  
+  if (! wtree_is_leaf(wtree)) {
+    bvstr = bitvector_tostring(wtree->bitvector);
+    out = (char *) malloc( (strlen(wtree->abc) + strlen(bvstr) + 2) * sizeof(char));
+    strcpy(out,wtree->abc);
+    strcat(out,"_");
+    strcat(out,bvstr);
   }
   else {
-    *out = (char *) realloc(*out, (strlen(*out) + strlen(wtree->abc)+2+depth) * sizeof(char));
-    for (i = 0; i < depth; i++) strcat(*out,"-");
-    if (depth == 0) strcpy(*out,wtree->abc);
-    else strcat(*out,wtree->abc);
-    strcat(*out,"\n");
+    out = (char *) malloc( 2 * sizeof(char));
+    strcpy(out,wtree->abc);
   }
+  
+  return out;
+}
+
+void wtree_tostring_recursion(Atom *wtree,int depth,char **out) {
+  int i = 0;
+  char *tmp;
+  
+  tmp = wtree_node_tostring(wtree);
+  *out = (char *) realloc(*out, (strlen(*out) + strlen(tmp)+2+depth) * sizeof(char));
+   
+  for (i = 0; i < depth; i++) strcat(*out,"-");
+  strcat(*out,tmp);
+  strcat(*out,"\n");
+  if (!wtree_is_leaf(wtree)) {
+    wtree_tostring_recursion(wtree->left,depth+1,out);
+    wtree_tostring_recursion(wtree->right,depth+1,out);
+  }                             
+}
+
+char *wtree_tostring(Atom *wtree){
+  char *out, *tmp;
+
+  out = (char *) malloc( 1 * sizeof(char));
+  out[0] = 0;
+  wtree_tostring_recursion(wtree,0,&out);
+  
+  return out;
 }
 
 void wtree_push(Atom *wtree, char ch){
