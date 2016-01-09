@@ -84,7 +84,7 @@ void wtree_tostring_recursion(Atom *wtree,int depth,char **out) {
 }
 
 char *wtree_tostring(Atom *wtree){
-  char *out, *tmp;
+  char *out;
 
   out = (char *) malloc( 1 * sizeof(char));
   out[0] = 0;

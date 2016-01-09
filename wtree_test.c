@@ -139,6 +139,5 @@ int main(void) {
   test_wtree_tostring();
   test_wtree_push();
   printf("Wtree module all tests passed\n");
-  system("PAUSE");
   return 0;
 }
