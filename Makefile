@@ -11,6 +11,13 @@ bitvector.test: bitvector.o bitvector_test.c
 	./runtest
 	rm runtest
 
+bwt.o: bwt.c
+	${GCC} -c bwt.c
+bwt.test: bwt.o bwt_test.c
+	${GCC} bwt_test.c -o runtest
+	./runtest
+	rm runtest
+
 wavelet_tree.o: wavelet_tree.c
 	${GCC} -c wavelet_tree.c
 
