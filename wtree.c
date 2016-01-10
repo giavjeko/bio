@@ -102,11 +102,38 @@ void wtree_tostring_recursion(Atom *node,int depth,char **out) {
   }                             
 }
 
-char *wtree_tostring(Wtree *wtree){
-  char *out;
+char* wtree_int_tostring(int number) {
+  int length, temp = number;
+  if (! number) {
+    return "0";
+  }
+  for (length = 0; temp; temp /= 10) {
+    length++;
+  }
+  char* result = (char*)malloc((length + 1) * sizeof(char));
+  int i;
+  for (i = length; number; number /= 10) {
+    result[--i] = (char)('0' + number % 10);
+  }
+  result[length] = 0;
+  return result;
+}
 
-  out = (char *) malloc( 1 * sizeof(char));
-  out[0] = 0;
+char *wtree_tostring(Wtree *wtree){
+  char *itos = wtree_int_tostring(wtree->Clen);
+  int i, len = strlen(itos)+3+1;
+  char *out = (char *) malloc( len * sizeof(char));
+  strcpy(out,itos);
+  strcat(out," -");
+  for (i = 0; i < wtree->Clen; i++) {
+    strcat(out," ");
+    itos = wtree_int_tostring(wtree->C[i]);
+    len += strlen(itos)+1;
+    out = (char *) realloc(out, len * sizeof(char));
+    strcat(out,itos);
+  }
+  strcat(out,"\n");
+ 
   wtree_tostring_recursion(wtree->root,0,&out);
   
   return out;
