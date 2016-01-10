@@ -18,12 +18,15 @@ Element* list_element_construct(int begin, int end) {
   Element* element = (Element*)malloc(sizeof(Element));
   element->begin = begin;
   element->end = end;
+  element->next = NULL;
   return element;
 }
 
 List* list_construct() {
   List* list = (List*)malloc(sizeof(List));
   list->length = 0;
+  list->head = NULL;
+  list->tail = NULL;
   return list;
 }
 
@@ -44,6 +47,9 @@ void list_push(List* list, int begin, int end) {
 
 char* list_int_tostring(int number) {
   int length, temp = number;
+  if (! number) {
+    return "0";
+  }
   for (length = 0; temp; temp /= 10) {
     length++;
   }
@@ -81,8 +87,8 @@ char* list_tostring(List* list) {
   Element* element;
   for (element = list->head; element; element = element->next) {
     char* element_str = list_element_tostring(element);
-    len += strlen(element_str + 2);
-    result = (char*)realloc(result, len);
+    len += strlen(element_str) + 2;
+    result = (char*)realloc(result, len * sizeof(char));
     strcat(result, element_str);
     free(element_str);
     if (element->next) {
