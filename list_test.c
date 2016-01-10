@@ -41,6 +41,8 @@ void test_list_int_tostring() {
   assert(! strcmp(first, "12"));
   char *second = list_int_tostring(123450);
   assert(! strcmp(second, "123450"));
+  char *third = list_int_tostring(0);
+  assert(! strcmp(third, "0"));
   printf("Int to string OK\n");
 }
 
