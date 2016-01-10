@@ -49,4 +49,4 @@ queue.test: queue queue_test.c
 	rm runtest
 
 clean:
-	rm *.o
+	rm *.o ${EXE}
