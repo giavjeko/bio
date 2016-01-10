@@ -1,10 +1,10 @@
 GCC=gcc -Wall
 EXE=main
 
-all: vector bitvector bwt wtree
-#	${GCC} bitvector wavelet_tree main -o ${EXE}
+all: set bitvector bwt wtree queue list
+	${GCC} main.c -o ${EXE}
 
-test: vector.test bitvector.test bwt.test wtree.test
+test: set.test bitvector.test bwt.test wtree.test queue.test list.test
 
 wtree: wtree.c
 	${GCC} -c wtree.c
