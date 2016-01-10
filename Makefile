@@ -13,10 +13,10 @@ wtree.test: wtree wtree_test.c
 	./runtest
 	rm runtest
 
-vector: vector.c
-	${GCC} -c vector.c
-vector.test: vector vector_test.c
-	${GCC} vector_test.c -o runtest
+set: set.c
+	${GCC} -c set.c
+set.test: set set_test.c
+	${GCC} set_test.c -o runtest
 	./runtest
 	rm runtest
 
