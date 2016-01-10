@@ -42,6 +42,11 @@ int set_contains(Set* set, char ch) {
   return strchr(set->data, ch) != NULL;
 }
 
+int set_compare(const void *a, const void *b) {
+  return (*(char*)a - *(char*)b);
+}
+
 char* set_tostring(Set* set) {
+  qsort(set->data, set->size, sizeof(char), set_compare);
   return set->data;
 }

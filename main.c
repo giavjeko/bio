@@ -10,7 +10,7 @@ char* generate_alphabet(char* string, int len) {
   for (i = 0; i < len; i++) {
     set_push(set, string[i]);
   }
-  return set->data;
+  return set_tostring(set);
 }
 
 Wtree* generate_wtree(char* string, int string_len, char* alphabet, int alphabet_len) {
