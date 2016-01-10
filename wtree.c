@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
-#include "vector.c"
 #include "bitvector.c"
+#include "list.c"
 
 typedef struct at Atom;
 struct at {
@@ -112,6 +112,13 @@ char *wtree_tostring(Wtree *wtree){
   return out;
 }
 
+void wtree_update_C(Wtree* wtree, char ch) {
+  int i = strchr(wtree->root->abc, ch) - wtree->root->abc;
+  for (i = i+1; i < wtree->Clen; i++) {
+    wtree->C[i]++;
+  }
+}
+
 void wtree_push(Wtree *wtree, char ch){
   Atom* node = wtree->root;
   while (! wtree_node_isleaf(node)) {
@@ -123,6 +130,26 @@ void wtree_push(Wtree *wtree, char ch){
       node = node->right;
     }
   }
+  wtree_update_C(wtree, ch);
 }
 
+void wtree_getIntervals_recursion(Wtree* wtree, Atom* node, int i, int j, List** list) {
+  int a, b;
+  if (wtree_node_isleaf(node)) {
+    a = strchr(wtree->root->abc, node->abc[0]) - wtree->root->abc;
+    list_push(*list,wtree->C[a]+i,wtree->C[a]+j);
+  } else {
+    a = i - 1 - bitvector_rank(node->bitvector,i-1);
+    b = j - bitvector_rank(node->bitvector,j);
+    if (b > a) wtree_getIntervals_recursion(wtree, node->left, a+1, b, list);
+    a = i - 1 - a;
+    b = j - b;
+    if (b > a) wtree_getIntervals_recursion(wtree, node->right, a+1, b, list);
+  }
+}
 
+List* wtree_getIntervals(Wtree* wtree, int i, int j) {
+  List* list = list_construct();
+  wtree_getIntervals_recursion(wtree, wtree->root, i, j, &list);
+  return list;
+}
