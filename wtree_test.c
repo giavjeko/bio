@@ -108,22 +108,23 @@ void test_wtree_tostring() {
   alphabet="a";
   wtree = wtree_construct(alphabet, strlen(alphabet));
   tmp = wtree_tostring(wtree);
-  assert(!strcmp(tmp,"a\n"));
+  assert(!strcmp(tmp,"1 - 0\na\n"));
 
   alphabet="ab";
   wtree = wtree_construct(alphabet, strlen(alphabet));
   tmp = wtree_tostring(wtree);
-  assert(!strcmp(tmp,"ab_\n-a\n-b\n"));
+  assert(!strcmp(tmp,"2 - 0 0\nab_\n-a\n-b\n"));
 
   alphabet="agv";
   wtree = wtree_construct(alphabet, strlen(alphabet));
   tmp = wtree_tostring(wtree);
-  assert(!strcmp(tmp,"agv_\n-ag_\n--a\n--g\n-v\n"));
+  assert(!strcmp(tmp,"3 - 0 0 0\nagv_\n-ag_\n--a\n--g\n-v\n"));
 
   alphabet="abcgimz";
   wtree = wtree_construct(alphabet, strlen(alphabet));
   tmp = wtree_tostring(wtree);
-  assert(!strcmp(tmp,"abcgimz_\n-abcg_\n--ab_\n---a\n---b\n--cg_\n---c\n---g\n-imz_\n--im_\n---i\n---m\n--z\n"));
+  //printf("!%s!",tmp);
+  assert(!strcmp(tmp,"7 - 0 0 0 0 0 0 0\nabcgimz_\n-abcg_\n--ab_\n---a\n---b\n--cg_\n---c\n---g\n-imz_\n--im_\n---i\n---m\n--z\n"));
 
   printf("\twtree_tostring test passed\n");
 }
@@ -151,6 +152,9 @@ void test_wtree_push() {
   for (i = 0; i < strlen(string); i++) {
     wtree_push(wtree, string[i]);
   }
+  char* tmp = wtree_tostring(wtree);
+  string = "7 - 0 1 3 5 11 15 18\n$_aelnp_1100110111100000000\n-$_ae_10011101111\n--$__101\n---$\n---_\n--ae_11111001\n---a\n---e\n-lnp_00100000\n--ln_1001100\n---l\n---n\n--p\n";
+  assert(!strcmp(tmp,string));
   assert(! strcmp(bitvector_tostring(wtree->root->bitvector), "1100110111100000000"));
   assert(! strcmp(bitvector_tostring(wtree->root->left->bitvector), "10011101111"));
   assert(! strcmp(bitvector_tostring(wtree->root->left->left->bitvector), "101"));
@@ -178,7 +182,8 @@ void test_wtree_getIntervals() {
     wtree_push(wtree, string[i]);
   }
   List* list = wtree_getIntervals(wtree,1,19);
-  printf("%s",list_tostring(list));
+  assert(! strcmp("List: <1, 1>, <2, 3>, <4, 5>, <6, 11>, <12, 15>, <16, 18>, <19, 19>",list_tostring(list)));
+  printf("\twtree_getIntervals test passed\n");
   system("PAUSE");
 }
 
