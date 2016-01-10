@@ -41,5 +41,12 @@ list.test: list list_test.c
 	./runtest
 	rm runtest
 
+queue: queue.c
+	${GCC} -c queue.c
+queue.test: queue queue_test.c
+	${GCC} queue_test.c -o runtest
+	./runtest
+	rm runtest
+
 clean:
 	rm *.o
