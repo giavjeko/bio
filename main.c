@@ -32,14 +32,13 @@ int* compute_LCP(Wtree* wtree) {
   List* list = list_construct();
   Element* element;
   
-  for (ii = 0; ii <= n; ii++) {
-    if (ii == 0 || ii == n) LCP[ii] = -1;
+  for (ii = 1; ii <= n+1; ii++) {
+    if (ii == 1 || ii == n+1) LCP[ii] = -1;
     else LCP[ii] = -2;
   }
   
   queue_push(queue,1,n,0);
   while(!queue_empty(queue)) {
-    printf("%s\n",queue_tostring(queue));
     queue_pop(queue,&i,&j,&l);
     list = wtree_getIntervals(wtree,i,j);
     for (element = list->head; element; element=element->next) {
@@ -51,7 +50,7 @@ int* compute_LCP(Wtree* wtree) {
   }
 
   printf("LCP:\n");  
-  for (ii = 0; ii <= n; ii++) {
+  for (ii = 1; ii <= n+1; ii++) {
     printf("%d ",LCP[ii]);
   }
   printf("\n");
@@ -62,7 +61,7 @@ int main () {
   char* alphabet = generate_alphabet(input, strlen(input));
   char* bwt = (char*)malloc((strlen(input) + 1) * sizeof(char));
   bwt_transform(input, bwt, strlen(input));
-  Wtree* wtree = generate_wtree(input, strlen(input), alphabet, strlen(alphabet));
+  Wtree* wtree = generate_wtree(bwt, strlen(input), alphabet, strlen(alphabet));
   printf("%s\n%s\n%s\n\n%s\n", input, alphabet, bwt, wtree_tostring(wtree));
   
   compute_LCP(wtree);
