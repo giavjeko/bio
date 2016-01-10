@@ -4,6 +4,8 @@
 #include "bitvector.c"
 
 char* data = "10101011010101001010100110001110101011000110111000111110001100110000011111";
+int rank = 39;
+int word1rank = 34;
 
 void populate_bitvector(Bitvector* bitvector) {
   int i;
@@ -53,7 +55,19 @@ void test_bitvector_push() {
   char* string = bitvector_tostring(bitvector);
   assert(bitvector->length == strlen(data));
   assert(! strcmp(string, data));
+  assert(bitvector->rank[0] == word1rank);
+  assert(bitvector->rank[1] == rank - word1rank);
   printf("Bitvector push OK\n");
+}
+
+void test_bitvector_rank() {
+  Bitvector* bitvector = bitvector_construct();
+  populate_bitvector(bitvector);
+  assert(bitvector_rank(bitvector, 0) == 0);
+  assert(bitvector_rank(bitvector, 8) == 5);
+  assert(bitvector_rank(bitvector, 64) == word1rank);
+  assert(bitvector_rank(bitvector, 70) == 35);
+  printf("Bitvector rank OK\n");
 }
 
 void test_bitvector_word_tostring() {
@@ -84,6 +98,7 @@ int main(void) {
   test_bitvector_is_full();
   test_bitvector_expand();
   test_bitvector_push();
+  test_bitvector_rank();
   test_bitvector_word_tostring();
   test_bitvector_tostring();
   printf("Bitvector module all tests passed\n");
