@@ -1,4 +1,5 @@
-#include "vector.c"
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct Element Element;
 struct Element {
@@ -39,4 +40,54 @@ void list_push(List* list, int begin, int end) {
   }
   list->tail = element;
   list->length++;
+}
+
+char* list_int_tostring(int number) {
+  int length, temp = number;
+  for (length = 0; temp; temp /= 10) {
+    length++;
+  }
+  char* result = (char*)malloc((length + 1) * sizeof(char));
+  int i;
+  for (i = length; number; number /= 10) {
+    result[--i] = (char)('0' + number % 10);
+  }
+  result[length] = 0;
+  return result;
+}
+
+char* list_element_tostring(Element* element) {
+  char* begin = list_int_tostring(element->begin);
+  char* end = list_int_tostring(element->end);
+  int length = strlen(begin) + strlen(end) + 5;
+  char* result = (char*)malloc(length * sizeof(char));
+  strcpy(result, "<");
+  strcat(result, begin);
+  strcat(result, ", ");
+  strcat(result, end);
+  strcat(result, ">");
+  free(begin);
+  free(end);
+  return result;
+}
+
+char* list_tostring(List* list) {
+  int len = 7;
+  if (list_empty(list)) {
+    return "Empty list";
+  }
+  char* result = (char*)malloc(len * sizeof(char));
+  strcpy(result, "List: ");
+  Element* element;
+  for (element = list->head; element; element = element->next) {
+    char* element_str = list_element_tostring(element);
+    len += strlen(element_str + 2);
+    result = (char*)realloc(result, len);
+    strcat(result, element_str);
+    free(element_str);
+    if (element->next) {
+      strcat(result, ", ");
+    }
+  }
+  return result;
 }
