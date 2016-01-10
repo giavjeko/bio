@@ -34,5 +34,12 @@ bwt.test: bwt bwt_test.c
 	./runtest
 	rm runtest
 
+list: list.c
+	${GCC} -c list.c
+list.test: list list_test.c
+	${GCC} list_test.c -o runtest
+	./runtest
+	rm runtest
+
 clean:
 	rm *.o
