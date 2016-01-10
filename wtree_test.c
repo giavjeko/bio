@@ -184,7 +184,6 @@ void test_wtree_getIntervals() {
   List* list = wtree_getIntervals(wtree,1,19);
   assert(! strcmp("List: <1, 1>, <2, 3>, <4, 5>, <6, 11>, <12, 15>, <16, 18>, <19, 19>",list_tostring(list)));
   printf("\twtree_getIntervals test passed\n");
-  system("PAUSE");
 }
 
 int main(void) {
