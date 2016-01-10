@@ -60,6 +60,11 @@ int queue_pop(Queue* queue, int* begin, int* end, int* l) {
   free(queue->tail);
   queue->tail = new_tail;
   queue->length--;
+  if (! queue_empty(queue)) {
+    queue->tail->next = NULL;
+  } else {
+    queue->head = NULL;
+  }
   return 1;
 }
 
