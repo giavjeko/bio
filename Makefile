@@ -1,8 +1,8 @@
 GCC=gcc -Wall
-EXE=main
+EXE=lpc
 
 all: set bitvector bwt wtree queue list
-	${GCC} main.c -o ${EXE}
+	${GCC} lpc.c -o ${EXE}
 
 test: set.test bitvector.test bwt.test wtree.test queue.test list.test
 
@@ -49,4 +49,4 @@ queue.test: queue queue_test.c
 	rm runtest
 
 clean:
-	rm *.o ${EXE}
+	rm -f *.o ${EXE}
