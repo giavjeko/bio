@@ -1,3 +1,5 @@
+// Implements linked list containing pairs of ints
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -14,6 +16,7 @@ struct List {
   int length;
 };
 
+// Allocate memory and initialize empty list element
 Element* list_element_construct(int begin, int end) {
   Element* element = (Element*)malloc(sizeof(Element));
   element->begin = begin;
@@ -22,6 +25,7 @@ Element* list_element_construct(int begin, int end) {
   return element;
 }
 
+// Allocate memory and initialize empty list
 List* list_construct() {
   List* list = (List*)malloc(sizeof(List));
   list->length = 0;
@@ -30,10 +34,12 @@ List* list_construct() {
   return list;
 }
 
+// Returin boolean telling if given list is empty
 int list_empty(List* list) {
   return ! list->length;
 }
 
+// Push given pair of ints into given list
 void list_push(List* list, int begin, int end) {
   Element* element = list_element_construct(begin, end);
   if (! list_empty(list)) {
@@ -45,6 +51,7 @@ void list_push(List* list, int begin, int end) {
   list->length++;
 }
 
+// Generate string representation of given number
 char* list_int_tostring(int number) {
   int length, temp = number;
   if (! number) {
@@ -62,6 +69,7 @@ char* list_int_tostring(int number) {
   return result;
 }
 
+// Generate string representation of given list element
 char* list_element_tostring(Element* element) {
   char* begin = list_int_tostring(element->begin);
   char* end = list_int_tostring(element->end);
@@ -77,6 +85,7 @@ char* list_element_tostring(Element* element) {
   return result;
 }
 
+// Generate string representation of given list
 char* list_tostring(List* list) {
   int len = 7;
   if (list_empty(list)) {

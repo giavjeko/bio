@@ -1,6 +1,10 @@
 #include <string.h>
 #include <stdlib.h>
 
+// Bitvector implementation
+// Stores array of booleans in memory using single bit per boolean.
+// Uses 64-bit words for storage
+
 typedef char Bit;
 typedef unsigned long long Word;
 typedef struct Bitvector Bitvector;
@@ -10,10 +14,12 @@ struct Bitvector {
   int length, capacity;
 };
 
+// Return bitvector word length - so Word type can be easily changed
 int bitvector_get_word_length() {
   return sizeof(Word) * 8;
 }
 
+// Allocate memory for bitvector containing single word
 Bitvector* bitvector_construct() {
   int word_length = bitvector_get_word_length();
   Bitvector* bitvector = (Bitvector*)malloc(sizeof(Bitvector));
@@ -24,10 +30,12 @@ Bitvector* bitvector_construct() {
   return bitvector;
 }
 
+// Return boolean telling if all allocated memory is used in given bitvector
 int bitvector_is_full(Bitvector* bitvector) {
   return bitvector->length == bitvector->capacity;
 }
 
+// Reallocate memory doubleing given bitvector capacity
 void bitvector_expand(Bitvector* bitvector) {
   int word_length = bitvector_get_word_length();
   bitvector->capacity *= 2;
@@ -36,6 +44,7 @@ void bitvector_expand(Bitvector* bitvector) {
   bitvector->rank = (Word*)realloc(bitvector->rank, word_count * sizeof(Word));
 }
 
+// Push given bit to the end of given bitvector, expand bitvector if needed
 void bitvector_push(Bitvector* bitvector, Bit bit) {
   int word_length = bitvector_get_word_length();
   int current_word_index = bitvector->length / word_length;
@@ -52,6 +61,7 @@ void bitvector_push(Bitvector* bitvector, Bit bit) {
   }
 }
 
+// Return 1-rank of given bitvector on given index
 unsigned long long bitvector_rank(Bitvector* bitvector, int index) {
   int word_length = bitvector_get_word_length();
   int current_word_index = index / word_length;
@@ -68,6 +78,7 @@ unsigned long long bitvector_rank(Bitvector* bitvector, int index) {
   return result;
 }
 
+// Generate string representation of given bitvector word
 char* bitvector_word_tostring(Word* word, int length) {
   char* result = (char*)malloc(length * sizeof(char) + 1);
   Word mask = (Word)1;
@@ -80,6 +91,7 @@ char* bitvector_word_tostring(Word* word, int length) {
   return result;
 }
 
+// Generate string representation of given bitvector
 char* bitvector_tostring(Bitvector* bitvector) {
   int word_length = bitvector_get_word_length();
   int current_word_index = bitvector->length / word_length;

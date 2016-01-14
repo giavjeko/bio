@@ -1,3 +1,5 @@
+// Implements queue structure containing elements of 3 integer values
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -17,6 +19,7 @@ struct Queue {
   int length;
 };
 
+// Allocate memory and initialize empty queue element
 QElement* queue_construct_element(int begin, int end, int l) {
   QElement* element = (QElement*)malloc(sizeof(QElement));
   element->begin = begin;
@@ -27,6 +30,7 @@ QElement* queue_construct_element(int begin, int end, int l) {
   return element;
 }
 
+// Allocate memory and initialize empty queue
 Queue* queue_construct() {
   Queue* queue = (Queue*)malloc(sizeof(Queue));
   queue->head = NULL;
@@ -35,10 +39,12 @@ Queue* queue_construct() {
   return queue;
 }
 
+// Return boolean telling if given queue is empty
 int queue_empty(Queue* queue) {
   return ! queue->length;
 }
 
+// Push given integers to given queue
 void queue_push(Queue* queue, int begin, int end, int l) {
   QElement* element = queue_construct_element(begin, end, l);
   element->next = queue->head;
@@ -51,6 +57,7 @@ void queue_push(Queue* queue, int begin, int end, int l) {
   queue->length++;
 }
 
+// Pop value from given queue and store integers into given variables
 int queue_pop(Queue* queue, int* begin, int* end, int* l) {
   if (queue_empty(queue)) return 0;
   *begin = queue->tail->begin;
@@ -68,6 +75,7 @@ int queue_pop(Queue* queue, int* begin, int* end, int* l) {
   return 1;
 }
 
+// Generate string representation of given number
 char* queue_int_tostring(int number) {
   int length, temp = number;
   if (! number) {
@@ -85,6 +93,7 @@ char* queue_int_tostring(int number) {
   return result;
 }
 
+// Generate string representation of given queue element
 char* queue_element_tostring(QElement* element) {
   char* begin = queue_int_tostring(element->begin);
   char* end = queue_int_tostring(element->end);
@@ -101,6 +110,7 @@ char* queue_element_tostring(QElement* element) {
   return result;
 }
 
+// Generate string representation of given queue
 char* queue_tostring(Queue *queue) {
   if (queue_empty(queue)) {
     return "Empty queue";
