@@ -7,7 +7,7 @@
 
 typedef struct Atom Atom;
 struct Atom {
-  char* abc;
+  char* alphabet;
   Bitvector* bitvector;
   Atom* left;
   Atom* right;
@@ -16,6 +16,7 @@ struct Atom {
 typedef struct Wtree Wtree;
 struct Wtree {
   Atom* root;
+  char* alphabet;
   int* C;
   int Clen;
 };
@@ -27,14 +28,14 @@ int wtree_compare(const void *a, const void *b) {
 
 // Returin true telling if given wtree node is leaf
 int wtree_node_isleaf(Atom* atom) {
-  return atom->abc[1] == 0;
+  return atom->alphabet[1] == 0;
 }
 
 // Allocate memory and initialize empty wavelet tree node
 Atom* wtree_node_construct(char* alphabet, int len) {
   Atom* node = (Atom*)malloc(sizeof(Atom));
-  node->abc = (char*)malloc((len + 1) * sizeof(char));
-  strcpy(node->abc, alphabet);
+  node->alphabet = (char*)malloc((len + 1) * sizeof(char));
+  strcpy(node->alphabet, alphabet);
   int left_len = len - len / 2;
   int right_len = len / 2;
 
@@ -64,9 +65,10 @@ Atom* wtree_node_construct(char* alphabet, int len) {
 Wtree* wtree_construct(char* alphabet, int len) {
   int i;
   Wtree* wtree = (Wtree*)malloc(sizeof(Wtree));
-  wtree->root = wtree_node_construct(alphabet,len);
+  wtree->root = wtree_node_construct(alphabet, len);
+  wtree->alphabet = wtree->root->alphabet;
   wtree->Clen = len;
-  wtree->C = (int*)malloc(len*sizeof(int));
+  wtree->C = (int*)malloc(len * sizeof(int));
   for (i = 0; i < len; i++) {
     wtree->C[i] = 0;
   }
@@ -80,33 +82,32 @@ char *wtree_node_tostring(Atom *node) {
 
   if (! wtree_node_isleaf(node)) {
     bvstr = bitvector_tostring(node->bitvector);
-    out = (char *) malloc( (strlen(node->abc) + strlen(bvstr) + 2) * sizeof(char));
-    strcpy(out,node->abc);
+    out = (char *) malloc( (strlen(node->alphabet) + strlen(bvstr) + 2) * sizeof(char));
+    strcpy(out, node->alphabet);
     strcat(out,"_");
-    strcat(out,bvstr);
-  }
-  else {
+    strcat(out, bvstr);
+  } else {
     out = (char *) malloc( 2 * sizeof(char));
-    strcpy(out,node->abc);
+    strcpy(out, node->alphabet);
   }
 
   return out;
 }
 
 // Recursively generate string representation of given wavelet tree
-void wtree_tostring_recursion(Atom *node,int depth,char **out) {
+void wtree_tostring_recursion(Atom *node, int depth, char **out) {
   int i = 0;
   char *tmp;
 
   tmp = wtree_node_tostring(node);
-  *out = (char *) realloc(*out, (strlen(*out) + strlen(tmp)+2+depth) * sizeof(char));
+  *out = (char *) realloc(*out, (strlen(*out) + strlen(tmp)+2 + depth) * sizeof(char));
 
   for (i = 0; i < depth; i++) strcat(*out,"-");
-  strcat(*out,tmp);
+  strcat(*out, tmp);
   strcat(*out,"\n");
   if (!wtree_node_isleaf(node)) {
-    wtree_tostring_recursion(node->left,depth+1,out);
-    wtree_tostring_recursion(node->right,depth+1,out);
+    wtree_tostring_recursion(node->left, depth + 1, out);
+    wtree_tostring_recursion(node->right, depth + 1, out);
   }
 }
 
@@ -131,26 +132,26 @@ char* wtree_int_tostring(int number) {
 // Generate string representation of given wavelet tree
 char *wtree_tostring(Wtree *wtree) {
   char *itos = wtree_int_tostring(wtree->Clen);
-  int i, len = strlen(itos)+3+1;
-  char *out = (char *) malloc( len * sizeof(char));
-  strcpy(out,itos);
+  int i, len = strlen(itos)+3 + 1;
+  char *out = (char *) malloc(len * sizeof(char));
+  strcpy(out, itos);
   strcat(out," -");
   for (i = 0; i < wtree->Clen; i++) {
     strcat(out," ");
     itos = wtree_int_tostring(wtree->C[i]);
     len += strlen(itos)+1;
     out = (char *) realloc(out, len * sizeof(char));
-    strcat(out,itos);
+    strcat(out, itos);
   }
   strcat(out,"\n");
-  wtree_tostring_recursion(wtree->root,0,&out);
+  wtree_tostring_recursion(wtree->root, 0, &out);
   return out;
 }
 
 // Calculate C array with new alphabet characted
 void wtree_update_C(Wtree* wtree, char ch) {
-  int i = strchr(wtree->root->abc, ch) - wtree->root->abc;
-  for (i = i+1; i < wtree->Clen; i++) {
+  int i = strchr(wtree->alphabet, ch) - wtree->alphabet;
+  for (i = i + 1; i < wtree->Clen; i++) {
     wtree->C[i]++;
   }
 }
@@ -159,7 +160,7 @@ void wtree_update_C(Wtree* wtree, char ch) {
 void wtree_push(Wtree *wtree, char ch) {
   Atom* node = wtree->root;
   while (! wtree_node_isleaf(node)) {
-    if (strchr(node->left->abc, ch) != NULL) {
+    if (strchr(node->left->alphabet, ch) != NULL) {
       bitvector_push(node->bitvector, (Bit)0);
       node = node->left;
     } else {
@@ -171,24 +172,32 @@ void wtree_push(Wtree *wtree, char ch) {
 }
 
 // Recursively calculate sub-intervals for given interval and add results to given list
-void wtree_getIntervals_recursion(Wtree* wtree, Atom* node, int i, int j, List** list) {
-  int a, b;
+void wtree_get_intervals_recursion(Wtree* wtree, Atom* node, int begin, int end, List** list) {
+  int char_index, char_rank, rank_1_before, rank_1_after, rank_0_before, rank_0_after;
+  char leaf_character;
+
+  if (end < begin) {
+    return;
+  }
+
   if (wtree_node_isleaf(node)) {
-    a = strchr(wtree->root->abc, node->abc[0]) - wtree->root->abc;
-    list_push(*list,wtree->C[a]+i,wtree->C[a]+j);
+    leaf_character = node->alphabet[0];
+    char_index = strchr(wtree->alphabet, leaf_character) - wtree->alphabet;
+    char_rank = wtree->C[char_index];
+    list_push(*list, char_rank + begin, char_rank + end);
   } else {
-    a = i - 1 - bitvector_rank(node->bitvector,i-1);
-    b = j - bitvector_rank(node->bitvector,j);
-    if (b > a) wtree_getIntervals_recursion(wtree, node->left, a+1, b, list);
-    a = i - 1 - a;
-    b = j - b;
-    if (b > a) wtree_getIntervals_recursion(wtree, node->right, a+1, b, list);
+    rank_1_before = bitvector_rank(node->bitvector, begin - 1);
+    rank_1_after = bitvector_rank(node->bitvector, end);
+    rank_0_before = begin - 1 - rank_1_before;
+    rank_0_after = end - rank_1_after;
+    wtree_get_intervals_recursion(wtree, node->left, rank_0_before + 1, rank_0_after, list);
+    wtree_get_intervals_recursion(wtree, node->right, rank_1_before + 1, rank_1_after, list);
   }
 }
 
 // Calculate sub-intervals for given interval in given wavelet tree
-List* wtree_getIntervals(Wtree* wtree, int i, int j) {
+List* wtree_get_intervals(Wtree* wtree, int begin, int end) {
   List* list = list_construct();
-  wtree_getIntervals_recursion(wtree, wtree->root, i, j, &list);
+  wtree_get_intervals_recursion(wtree, wtree->root, begin, end, &list);
   return list;
 }

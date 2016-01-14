@@ -19,15 +19,16 @@ void test_wtree_construct() {
 
   alphabet = "abcde";
   wtree = wtree_construct(alphabet, strlen(alphabet));
-  assert(!strcmp(wtree->root->abc, "abcde"));
-  assert(!strcmp(wtree->root->left->abc, "abc"));
-  assert(!strcmp(wtree->root->left->left->abc, "ab"));
-  assert(!strcmp(wtree->root->left->left->left->abc, "a"));
-  assert(!strcmp(wtree->root->left->left->right->abc, "b"));
-  assert(!strcmp(wtree->root->left->right->abc, "c"));
-  assert(!strcmp(wtree->root->right->abc, "de"));
-  assert(!strcmp(wtree->root->right->left->abc, "d"));
-  assert(!strcmp(wtree->root->right->right->abc, "e"));
+  assert(!strcmp(wtree->alphabet, "abcde"));
+  assert(!strcmp(wtree->root->alphabet, "abcde"));
+  assert(!strcmp(wtree->root->left->alphabet, "abc"));
+  assert(!strcmp(wtree->root->left->left->alphabet, "ab"));
+  assert(!strcmp(wtree->root->left->left->left->alphabet, "a"));
+  assert(!strcmp(wtree->root->left->left->right->alphabet, "b"));
+  assert(!strcmp(wtree->root->left->right->alphabet, "c"));
+  assert(!strcmp(wtree->root->right->alphabet, "de"));
+  assert(!strcmp(wtree->root->right->left->alphabet, "d"));
+  assert(!strcmp(wtree->root->right->right->alphabet, "e"));
   assert(wtree_node_isleaf(wtree->root->left->left->left));
   assert(wtree_node_isleaf(wtree->root->left->left->right));
   assert(wtree_node_isleaf(wtree->root->right->left));
@@ -41,13 +42,14 @@ void test_wtree_construct() {
 
   alphabet="abc";
   wtree = wtree_construct(alphabet, strlen(alphabet));
-  assert(!strcmp(wtree->root->abc,"abc"));
-  assert(!strcmp(wtree->root->left->abc,"ab"));
-  assert(!strcmp(wtree->root->left->left->abc,"a"));
-  assert(!strcmp(wtree->root->left->right->abc,"b"));
+  assert(!strcmp(wtree->alphabet,"abc"));
+  assert(!strcmp(wtree->root->alphabet,"abc"));
+  assert(!strcmp(wtree->root->left->alphabet,"ab"));
+  assert(!strcmp(wtree->root->left->left->alphabet,"a"));
+  assert(!strcmp(wtree->root->left->right->alphabet,"b"));
   assert(wtree->root->left->left->left==NULL);
   assert(wtree->root->left->left->right==NULL);
-  assert(!strcmp(wtree->root->right->abc,"c"));
+  assert(!strcmp(wtree->root->right->alphabet,"c"));
   assert(wtree->root->right->left==NULL);
   assert(wtree->root->right->right==NULL);
   assert(wtree->Clen == 3);
@@ -57,15 +59,16 @@ void test_wtree_construct() {
 
   alphabet="abcgmz";
   wtree = wtree_construct(alphabet, strlen(alphabet));
-  assert(!strcmp(wtree->root->abc,"abcgmz"));
-  assert(!strcmp(wtree->root->left->abc,"abc"));
-  assert(!strcmp(wtree->root->left->left->abc,"ab"));
-  assert(!strcmp(wtree->root->left->right->abc,"c"));
+  assert(!strcmp(wtree->alphabet,"abcgmz"));
+  assert(!strcmp(wtree->root->alphabet,"abcgmz"));
+  assert(!strcmp(wtree->root->left->alphabet,"abc"));
+  assert(!strcmp(wtree->root->left->left->alphabet,"ab"));
+  assert(!strcmp(wtree->root->left->right->alphabet,"c"));
   assert(wtree->root->left->left->left->left==NULL);
   assert(wtree->root->left->left->left->right==NULL);
   assert(wtree->root->left->left->right->right==NULL);
-  assert(!strcmp(wtree->root->right->left->abc,"gm"));
-  assert(!strcmp(wtree->root->right->right->abc,"z"));
+  assert(!strcmp(wtree->root->right->left->alphabet,"gm"));
+  assert(!strcmp(wtree->root->right->right->alphabet,"z"));
   assert(wtree->root->right->left->left->right==NULL);
   assert(wtree->root->right->left->right->right==NULL);
   assert(wtree->root->right->right->right==NULL);
@@ -79,7 +82,8 @@ void test_wtree_construct() {
 
   alphabet="1";
   wtree = wtree_construct(alphabet, strlen(alphabet));
-  assert(!strcmp(wtree->root->abc,"1"));
+  assert(!strcmp(wtree->alphabet,"1"));
+  assert(!strcmp(wtree->root->alphabet,"1"));
   assert(wtree->root->left==NULL);
   assert(wtree->root->right==NULL);
   assert(wtree->Clen == 1);
@@ -87,9 +91,10 @@ void test_wtree_construct() {
 
   alphabet=" %/$";
   wtree = wtree_construct(alphabet, strlen(alphabet));
-  assert(!strcmp(wtree->root->abc," %/$"));
-  assert(!strcmp(wtree->root->left->abc," %"));
-  assert(!strcmp(wtree->root->right->abc,"/$"));
+  assert(!strcmp(wtree->alphabet," %/$"));
+  assert(!strcmp(wtree->root->alphabet," %/$"));
+  assert(!strcmp(wtree->root->left->alphabet," %"));
+  assert(!strcmp(wtree->root->right->alphabet,"/$"));
   assert(wtree->root->left->left->left==NULL);
   assert(wtree->root->right->right->left==NULL);
   assert(wtree->Clen == 4);
@@ -169,11 +174,11 @@ void test_wtree_push() {
   assert(wtree->C[4] == 11);
   assert(wtree->C[5] == 15);
   assert(wtree->C[6] == 18);
-  
+
   printf("\twtree_push test passed\n");
 }
 
-void test_wtree_getIntervals() {
+void test_wtree_get_intervals() {
   char* alphabet = "$_aelnp";
   Wtree* wtree = wtree_construct(alphabet, strlen(alphabet));
   char* string = "nle_pl$nnlleee_eaae";
@@ -181,9 +186,9 @@ void test_wtree_getIntervals() {
   for (i = 0; i < strlen(string); i++) {
     wtree_push(wtree, string[i]);
   }
-  List* list = wtree_getIntervals(wtree,1,19);
+  List* list = wtree_get_intervals(wtree,1,19);
   assert(! strcmp("List: <1, 1>, <2, 3>, <4, 5>, <6, 11>, <12, 15>, <16, 18>, <19, 19>",list_tostring(list)));
-  printf("\twtree_getIntervals test passed\n");
+  printf("\twtree_get_intervals test passed\n");
 }
 
 int main(void) {
@@ -192,7 +197,7 @@ int main(void) {
   test_wtree_construct();
   test_wtree_tostring();
   test_wtree_push();
-  test_wtree_getIntervals();
+  test_wtree_get_intervals();
   printf("Wtree module all tests passed\n");
   return 0;
 }

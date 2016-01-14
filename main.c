@@ -40,7 +40,7 @@ int* compute_LCP(Wtree* wtree) {
   queue_push(queue,1,n,0);
   while(!queue_empty(queue)) {
     queue_pop(queue,&i,&j,&l);
-    list = wtree_getIntervals(wtree,i,j);
+    list = wtree_get_intervals(wtree,i,j);
     for (element = list->head; element; element=element->next) {
       if (LCP[element->end+1] == -2) {
         queue_push(queue,element->begin,element->end,l+1);
