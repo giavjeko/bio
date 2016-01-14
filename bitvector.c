@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <assert.h>
 
 // Bitvector implementation
 // Stores array of booleans in memory using single bit per boolean.
@@ -27,6 +28,8 @@ Bitvector* bitvector_construct() {
   bitvector->capacity = word_length;
   bitvector->data = (Word*)malloc(sizeof(Word));
   bitvector->rank = (Word*)malloc(sizeof(Word));
+  *bitvector->data = (Word)0;
+  *bitvector->rank = (Word)0;
   return bitvector;
 }
 
@@ -49,7 +52,7 @@ void bitvector_push(Bitvector* bitvector, Bit bit) {
   int word_length = bitvector_get_word_length();
   int current_word_index = bitvector->length / word_length;
   // Initialize rank to prevoius block value
-  if (! bitvector->length % word_length && current_word_index) {
+  if (bitvector->length % word_length == 0 && current_word_index) {
     bitvector->rank[current_word_index] = bitvector->rank[current_word_index - 1];
   }
   bitvector->data[current_word_index] <<= 1;
@@ -63,6 +66,7 @@ void bitvector_push(Bitvector* bitvector, Bit bit) {
 
 // Return 1-rank of given bitvector on given index
 unsigned long long bitvector_rank(Bitvector* bitvector, int index) {
+  assert(index <= bitvector->length);
   int word_length = bitvector_get_word_length();
   int current_word_index = index / word_length;
   int last_word_index = bitvector->length / word_length;
