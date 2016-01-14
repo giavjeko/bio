@@ -17,8 +17,8 @@ typedef struct Wtree Wtree;
 struct Wtree {
   Atom* root;
   char* alphabet;
-  int* C;
-  int Clen;
+  int* char_rank;
+  int char_rank_len;
 };
 
 // Helper function used to sort string
@@ -67,10 +67,10 @@ Wtree* wtree_construct(char* alphabet, int len) {
   Wtree* wtree = (Wtree*)malloc(sizeof(Wtree));
   wtree->root = wtree_node_construct(alphabet, len);
   wtree->alphabet = wtree->root->alphabet;
-  wtree->Clen = len;
-  wtree->C = (int*)malloc(len * sizeof(int));
+  wtree->char_rank_len = len;
+  wtree->char_rank = (int*)malloc(len * sizeof(int));
   for (i = 0; i < len; i++) {
-    wtree->C[i] = 0;
+    wtree->char_rank[i] = 0;
   }
   return wtree;
 }
@@ -131,14 +131,14 @@ char* wtree_int_tostring(int number) {
 
 // Generate string representation of given wavelet tree
 char *wtree_tostring(Wtree *wtree) {
-  char *itos = wtree_int_tostring(wtree->Clen);
+  char *itos = wtree_int_tostring(wtree->char_rank_len);
   int i, len = strlen(itos)+3 + 1;
   char *out = (char *) malloc(len * sizeof(char));
   strcpy(out, itos);
   strcat(out," -");
-  for (i = 0; i < wtree->Clen; i++) {
+  for (i = 0; i < wtree->char_rank_len; i++) {
     strcat(out," ");
-    itos = wtree_int_tostring(wtree->C[i]);
+    itos = wtree_int_tostring(wtree->char_rank[i]);
     len += strlen(itos)+1;
     out = (char *) realloc(out, len * sizeof(char));
     strcat(out, itos);
@@ -149,10 +149,10 @@ char *wtree_tostring(Wtree *wtree) {
 }
 
 // Calculate C array with new alphabet characted
-void wtree_update_C(Wtree* wtree, char ch) {
+void wtree_update_char_rank(Wtree* wtree, char ch) {
   int i = strchr(wtree->alphabet, ch) - wtree->alphabet;
-  for (i = i + 1; i < wtree->Clen; i++) {
-    wtree->C[i]++;
+  for (i = i + 1; i < wtree->char_rank_len; i++) {
+    wtree->char_rank[i]++;
   }
 }
 
@@ -168,7 +168,7 @@ void wtree_push(Wtree *wtree, char ch) {
       node = node->right;
     }
   }
-  wtree_update_C(wtree, ch);
+  wtree_update_char_rank(wtree, ch);
 }
 
 // Recursively calculate sub-intervals for given interval and add results to given list
@@ -183,7 +183,7 @@ void wtree_get_intervals_recursion(Wtree* wtree, Atom* node, int begin, int end,
   if (wtree_node_isleaf(node)) {
     leaf_character = node->alphabet[0];
     char_index = strchr(wtree->alphabet, leaf_character) - wtree->alphabet;
-    char_rank = wtree->C[char_index];
+    char_rank = wtree->char_rank[char_index];
     list_push(*list, char_rank + begin, char_rank + end);
   } else {
     rank_1_before = bitvector_rank(node->bitvector, begin - 1);
