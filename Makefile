@@ -52,4 +52,4 @@ gen: gen.c
 	${GCC} gen.c -o gen
 
 clean:
-	rm -f *.o ${EXE}
+	rm -f *.o ${EXE} gen

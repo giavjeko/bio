@@ -5,6 +5,8 @@
 #include "set.c"
 #include "queue.c"
 
+#define LCP_EOF '\t'
+
 // Return alphabet for given string
 char* generate_alphabet(char* string, int len) {
   int i;
@@ -65,10 +67,12 @@ void process(char* string, int* result, int len) {
 void input(char* filename, char** dst, int* len) {
   FILE* file = fopen(filename, "r");
   fseek(file, 0, SEEK_END);
-  *len = ftell(file) - 1;
+  *len = ftell(file);
   fseek(file, 0, SEEK_SET);
   *dst = (char*)malloc((*len + 1) * sizeof(dst));
   fscanf(file, "%s", *dst);
+  (*dst)[*len - 1] = LCP_EOF;
+  (*dst)[*len] = 0;
   fclose(file);
 }
 

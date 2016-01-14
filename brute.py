@@ -7,7 +7,7 @@ def cpl(a, b):
       return i
   return l
 
-string = raw_input()
+string = raw_input() + '\t'
 l = len(string)
 sa = [string[i:] for i in xrange(l)]
 sa.sort()

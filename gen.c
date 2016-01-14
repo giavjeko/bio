@@ -4,7 +4,7 @@
 #include <string.h>
 #include <assert.h>
 
-char* alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+[]{}\\'\"<>?:;";
+char* alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#%^&*()_+[]{}\\'\"<>?:;";
 
 void get_sample(char* src, int src_len, char* dst, int dst_len) {
   assert(dst_len <= src_len);
