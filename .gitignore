@@ -3,6 +3,5 @@
 
 # Binaries
 *.o
-
-# Main executable
 lpc
+gen

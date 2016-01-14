@@ -48,5 +48,8 @@ queue.test: queue queue_test.c
 	./runtest
 	rm runtest
 
+gen: gen.c
+	${GCC} gen.c -o gen
+
 clean:
 	rm -f *.o ${EXE}
