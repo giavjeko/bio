@@ -15,7 +15,7 @@ void test_bwt_generate_rotations() {
   assert(! strncmp(result[1], "estt", 4));
   assert(! strncmp(result[2], "stte", 4));
   assert(! strncmp(result[3], "ttes", 4));
-  printf("Generate rotations OK\n");
+  printf("\tGenerate rotations test passed\n");
   free(storage);
   free(result);
 }
@@ -26,7 +26,7 @@ void test_bwt_compare() {
   assert(bwt_compare(&a, &a) == 0);
   assert(bwt_compare(&b, &a) > 0);
   assert(bwt_compare(&a, &b) < 0);
-  printf("Compare OK\n");
+  printf("\tCompare test passed\n");
 }
 
 void test_bwt_sort_strings() {
@@ -36,7 +36,7 @@ void test_bwt_sort_strings() {
   assert(! strcmp(strings[1], "1234"));
   assert(! strcmp(strings[2], "aaaa"));
   assert(! strcmp(strings[3], "abcd"));
-  printf("Sort strings OK\n");
+  printf("\tSort strings test passed\n");
 }
 
 void test_bwt_get_last_column() {
@@ -44,7 +44,7 @@ void test_bwt_get_last_column() {
   char last_column[5];
   bwt_get_last_column(strings, last_column, 4);
   assert(! strcmp(last_column, "last"));
-  printf("Last column OK\n");
+  printf("\tLast column test passed\n");
 }
 
 void test_bwt_transform() {
@@ -53,7 +53,7 @@ void test_bwt_transform() {
   char result[20];
   bwt_transform(string, result, strlen(string));
   assert(! strcmp(result, expected));
-  printf("BWT transform OK\n");
+  printf("\tBWT transform test passed\n");
 }
 
 int main(void) {

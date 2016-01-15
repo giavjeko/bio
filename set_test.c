@@ -7,7 +7,7 @@ void test_set_construct() {
   assert(set->capacity == 1);
   assert(set->size == 0);
   assert(! strcmp(set->data, ""));
-  printf("Set construct OK\n");
+  printf("\tSet construct test passed\n");
 }
 
 void test_set_is_full() {
@@ -15,7 +15,7 @@ void test_set_is_full() {
   assert(! set_is_full(set));
   set_push(set, 'a');
   assert(! set_is_full(set));
-  printf("Set is full OK\n");
+  printf("\tSet is full test passed\n");
 }
 
 void test_set_extend() {
@@ -23,7 +23,7 @@ void test_set_extend() {
   int capacity = set->capacity;
   set_extend(set);
   assert(set->capacity = 2 * capacity);
-  printf("Set extend OK\n");
+  printf("\tSet extend test passed\n");
 }
 
 void test_set_push() {
@@ -38,7 +38,7 @@ void test_set_push() {
   assert(return_value == 0);
   assert(set->size == 2);
   assert(! strcmp(set->data, "ab"));
-  printf("Set push OK\n");
+  printf("\tSet push test passed\n");
 }
 
 void test_set_contains() {
@@ -47,7 +47,7 @@ void test_set_contains() {
   set_push(set, 'b');
   assert(set_contains(set, 'a'));
   assert(! set_contains(set, 'c'));
-  printf("Set contains OK\n");
+  printf("\tSet contains test passed\n");
 }
 
 int main () {

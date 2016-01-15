@@ -17,7 +17,7 @@ void populate_bitvector(Bitvector* bitvector) {
 void test_bitvector_get_word_length() {
   int word_length = bitvector_get_word_length();
   assert(word_length == 64);
-  printf("Word length OK\n");
+  printf("\tWord length test passed\n");
 }
 
 void test_bitvector_construct() {
@@ -25,7 +25,7 @@ void test_bitvector_construct() {
   int word_length = bitvector_get_word_length();
   assert(bitvector->length == 0);
   assert(bitvector->capacity == word_length);
-  printf("Bitvector construct OK\n");
+  printf("\tBitvector construct test passed\n");
 }
 
 void test_bitvector_is_full() {
@@ -37,7 +37,7 @@ void test_bitvector_is_full() {
   assert(bitvector->capacity == 2 * word_length);
   bitvector_push(bitvector, (Bit)1);
   assert(! bitvector_is_full(bitvector));
-  printf("Bitvector is full OK\n");
+  printf("\tBitvector is full test passed\n");
 }
 
 void test_bitvector_expand() {
@@ -46,7 +46,7 @@ void test_bitvector_expand() {
   assert(bitvector->capacity == word_length);
   bitvector_expand(bitvector);
   assert(bitvector->capacity == word_length * 2);
-  printf("Bitvector expand OK\n");
+  printf("\tBitvector expand test passed\n");
 }
 
 void test_bitvector_push() {
@@ -56,8 +56,8 @@ void test_bitvector_push() {
   assert(bitvector->length == strlen(data));
   assert(! strcmp(string, data));
   assert(bitvector->rank[0] == word1rank);
-  assert(bitvector->rank[1] == rank - word1rank);
-  printf("Bitvector push OK\n");
+  assert(bitvector->rank[1] == rank);
+  printf("\tBitvector push test passed\n");
 }
 
 void test_bitvector_rank() {
@@ -67,7 +67,7 @@ void test_bitvector_rank() {
   assert(bitvector_rank(bitvector, 8) == 5);
   assert(bitvector_rank(bitvector, 64) == word1rank);
   assert(bitvector_rank(bitvector, 70) == 35);
-  printf("Bitvector rank OK\n");
+  printf("\tBitvector rank test passed\n");
 }
 
 void test_bitvector_word_tostring() {
@@ -75,7 +75,7 @@ void test_bitvector_word_tostring() {
   char* string = "1010101101010100101010011000111010101100011011100011111000110011";
   char* result = bitvector_word_tostring(&word, strlen(string));
   assert(! strcmp(result, string));
-  printf("Word to string OK\n");
+  printf("\tWord to string test passed\n");
 }
 
 void test_bitvector_tostring() {
@@ -88,7 +88,7 @@ void test_bitvector_tostring() {
   string = bitvector_tostring(bitvector);
   assert(! strcmp(string, ""));
 
-  printf("Bitvector to string OK\n");
+  printf("\tBitvector to string test passed\n");
 }
 
 int main(void) {

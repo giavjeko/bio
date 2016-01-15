@@ -10,7 +10,7 @@ void test_queue_construct_element() {
   assert(element->l == 3);
   assert(element->next == NULL);
   assert(element->previous == NULL);
-  printf("Queue construct element OK\n");
+  printf("\tQueue construct element test passed\n");
 }
 
 void test_queue_construct() {
@@ -18,7 +18,7 @@ void test_queue_construct() {
   assert(queue->head == NULL);
   assert(queue->tail == NULL);
   assert(queue->length == 0);
-  printf("Queue construct OK\n");
+  printf("\tQueue construct test passed\n");
 }
 
 void test_queue_push() {
@@ -40,7 +40,7 @@ void test_queue_push() {
   assert(queue->tail->previous == queue->head);
   assert(queue->tail == old_head);
   assert(queue->length == 2);
-  printf("Queue push OK\n");
+  printf("\tQueue push test passed\n");
 }
 
 void test_queue_pop() {
@@ -63,7 +63,7 @@ void test_queue_pop() {
   return_value = queue_pop(queue, &begin, &end, &l);
   assert(return_value == 0);
   assert(queue_empty(queue));
-  printf("Queue pop OK\n");
+  printf("\tQueue pop test passed\n");
 }
 
 void test_queue_element_tostring() {
@@ -75,7 +75,7 @@ void test_queue_element_tostring() {
   element = queue_construct_element(10, 452, 0);
   element_str = queue_element_tostring(element);
   assert(! strcmp(element_str, "(<10, 452>, 0)"));
-  printf("Queue element tostring OK\n");
+  printf("\tQueue element tostring test passed\n");
 }
 
 void test_queue_tostring() {
@@ -89,7 +89,7 @@ void test_queue_tostring() {
   queue_push(queue, 10, 452, 0);
   queue_str = queue_tostring(queue);
   assert(! strcmp(queue_str, "Queue: (<10, 452>, 0), (<1, 2>, 3)"));
-  printf("Queue tostring OK\n");
+  printf("\tQueue tostring test passed\n");
 }
 
 int main(void) {
