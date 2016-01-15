@@ -8,7 +8,10 @@ Bioinformatics student project.
 
 To install our tool, run ```make```
 
+## Testing
+
+To run tests on all modules run ```make test```
+
 ## Running
 
-Run ```./lcp [input_file_path]```
-If ```input_file_path``` is not given, program will read input file name from standard input.
+Run ```./lcp [input_file_path] [output_file_path]```
