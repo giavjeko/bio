@@ -50,6 +50,7 @@ void compute_lcp(Wtree* wtree, int* dst, int len) {
         dst[element->end + 1] = l;
       }
     }
+    list_destroy(list);
   }
 }
 

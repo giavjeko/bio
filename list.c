@@ -106,3 +106,12 @@ char* list_tostring(List* list) {
   }
   return result;
 }
+
+// Destroy given list
+void list_destroy(List* list) {
+  Element* element;
+  for (element = list->head; element; element = element->next) {
+    free(element);
+  }
+  free(list);
+}
