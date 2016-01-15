@@ -4,27 +4,19 @@
 #include <stdlib.h>
 #include "bwt.c"
 
-void test_bwt_rotate_left() {
-  char* original = "test";
-  char* expected = "estt";
-  char result[6];
-  bwt_rotate_left(original, result, strlen(original));
-  assert(! strcmp(result, expected));
-  printf("Rotate left OK\n");
-}
-
 void test_bwt_generate_rotations() {
   char* original = "test";
   char** result = (char**)malloc(4 * sizeof(char*));
-  int i;
-  for (i = 0; i < 4; i++) result[i] = (char*)malloc(5 * sizeof(char));
-  bwt_generate_rotations(original, result, strlen(original));
-  assert(! strcmp(result[0], "test"));
-  assert(! strcmp(result[1], "estt"));
-  assert(! strcmp(result[2], "stte"));
-  assert(! strcmp(result[3], "ttes"));
+  char* storage = (char*)malloc((2 * strlen(original) + 1) * sizeof(char));
+  strcpy(storage, original);
+  strcat(storage, original);
+  bwt_generate_rotations(storage, result, strlen(original));
+  assert(! strncmp(result[0], "test", 4));
+  assert(! strncmp(result[1], "estt", 4));
+  assert(! strncmp(result[2], "stte", 4));
+  assert(! strncmp(result[3], "ttes", 4));
   printf("Generate rotations OK\n");
-  for (i = 0; i < 4; i++) free(result[i]);
+  free(storage);
   free(result);
 }
 
@@ -66,7 +58,6 @@ void test_bwt_transform() {
 
 int main(void) {
   printf("Bwt module running tests\n");
-  test_bwt_rotate_left();
   test_bwt_generate_rotations();
   test_bwt_compare();
   test_bwt_sort_strings();
