@@ -1,10 +1,13 @@
 GCC=gcc -Wall
 EXE=lpc
 
-all: set bitvector bwt wtree queue list
+all: io set bitvector bwt wtree queue list
 	${GCC} lpc.c -o ${EXE}
 
 test: set.test bitvector.test bwt.test wtree.test queue.test list.test
+
+io: io.c
+	${GCC} -c io.c
 
 wtree: wtree.c
 	${GCC} -c wtree.c
@@ -12,6 +15,8 @@ wtree.test: wtree wtree_test.c
 	${GCC} wtree_test.c -o runtest
 	./runtest
 	rm runtest
+wtree.analysis: io wtree wtree_analysis.c
+	${GCC} wtree_analysis.c -o wtree_analysis
 
 set: set.c
 	${GCC} -c set.c
@@ -33,6 +38,8 @@ bwt.test: bwt bwt_test.c
 	${GCC} bwt_test.c -o runtest
 	./runtest
 	rm runtest
+bwt.analysis: io bwt bwt_analysis.c
+	${GCC} bwt_analysis.c -o bwt_analysis
 
 list: list.c
 	${GCC} -c list.c
