@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "bitvector.c"
+#include "set.c"
 #include "list.c"
 
 typedef struct Atom Atom;
@@ -169,6 +170,20 @@ void wtree_push(Wtree *wtree, char ch) {
     }
   }
   wtree_update_char_rank(wtree, ch);
+}
+
+Wtree* wtree_generate(char* string, int len) {
+  Set* alphabet = set_construct();
+  for (int i = 0; i < len; i++) {
+    set_push(alphabet, string[i]);
+  }
+  char* alphabet_str = set_tostring(alphabet);
+  int alphabet_len = strlen(alphabet_str);
+  Wtree* wtree = wtree_construct(alphabet_str, alphabet_len);
+  for (int i = 0; i < len; i++) {
+    wtree_push(wtree, string[i]);
+  }
+  return wtree;
 }
 
 // Recursively calculate sub-intervals for given interval and add results to given list
