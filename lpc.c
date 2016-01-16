@@ -1,31 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+#include "io.c"
 #include "bwt.c"
 #include "wtree.c"
-#include "set.c"
 #include "queue.c"
 
 #define LCP_EOF '\t'
-
-// Return alphabet for given string
-char* generate_alphabet(char* string, int len) {
-  int i;
-  Set* set = set_construct();
-  for (i = 0; i < len; i++) {
-    set_push(set, string[i]);
-  }
-  return set_tostring(set);
-}
-
-// Return Wavelet tree for given string and alphabet
-Wtree* generate_wtree(char* string, int string_len, char* alphabet, int alphabet_len) {
-  int i;
-  Wtree* wtree = wtree_construct(alphabet, alphabet_len);
-  for (i = 0; i < string_len; i++) {
-    wtree_push(wtree, string[i]);
-  }
-  return wtree;
-}
 
 // Compute lcp for given Wavelet tree with data
 void compute_lcp(Wtree* wtree, int* dst, int len) {
@@ -56,33 +36,11 @@ void compute_lcp(Wtree* wtree, int* dst, int len) {
 
 void process(char* string, int* result, int len) {
   char* bwt = (char*)malloc((len + 1) * sizeof(char));
-  char* alphabet = generate_alphabet(string, len);
   bwt_transform(string, bwt, len);
-  Wtree* wtree = generate_wtree(bwt, len, alphabet, strlen(alphabet));
-  compute_lcp(wtree, result, len);
+  Wtree* wtree = wtree_generate(bwt, len);
   free(bwt);
-  free(alphabet);
+  compute_lcp(wtree, result, len);
   free(wtree);
-}
-
-void input(char* filename, char** dst, int* len) {
-  FILE* file = fopen(filename, "r");
-  fseek(file, 0, SEEK_END);
-  *len = ftell(file);
-  fseek(file, 0, SEEK_SET);
-  *dst = (char*)malloc((*len + 1) * sizeof(dst));
-  fscanf(file, "%s", *dst);
-  (*dst)[*len - 1] = LCP_EOF;
-  (*dst)[*len] = 0;
-  fclose(file);
-}
-
-void output(char* filename, int* data, int len) {
-  FILE* file = fopen(filename, "w");
-  for (int i = 1; i <= len + 1; i++) {
-    fprintf(file, "%d\n", data[i]);
-  }
-  fclose(file);
 }
 
 int main(int argc, char** argv) {
@@ -95,10 +53,10 @@ int main(int argc, char** argv) {
   int len;
   char* string;
 
-  input(input_path, &string, &len);
+  io_str_input(input_path, &string, &len);
   int* result = (int*)malloc((len + 2) * sizeof(int));
   process(string, result, len);
-  output(output_path, result, len);
+  io_int_output(output_path, result, len);
   free(result);
 
   return 0;
