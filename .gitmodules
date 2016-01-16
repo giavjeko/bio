@@ -1,0 +1,3 @@
+[submodule "cgmemtime"]
+	path = cgmemtime
+	url = https://github.com/isovic/cgmemtime
