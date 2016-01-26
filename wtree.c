@@ -174,13 +174,14 @@ void wtree_push(Wtree *wtree, char ch) {
 
 Wtree* wtree_generate(char* string, int len) {
   Set* alphabet = set_construct();
-  for (int i = 0; i < len; i++) {
+  int i = 0;
+  for (i = 0; i < len; i++) {
     set_push(alphabet, string[i]);
   }
   char* alphabet_str = set_tostring(alphabet);
   int alphabet_len = strlen(alphabet_str);
   Wtree* wtree = wtree_construct(alphabet_str, alphabet_len);
-  for (int i = 0; i < len; i++) {
+  for (i = 0; i < len; i++) {
     wtree_push(wtree, string[i]);
   }
   return wtree;
