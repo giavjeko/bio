@@ -3,6 +3,6 @@
 
 # Binaries
 *.o
-lpc
+lcp
 gen
 *_analysis

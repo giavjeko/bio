@@ -38,6 +38,6 @@ do
   echo "Wavelet tree construction"
   process ./wtree_analysis $in
   echo "LPC"
-  process ./lpc $in /dev/null
+  process ./lcp $in /dev/null
   echo
 done

@@ -8,7 +8,7 @@ do
   in=files/in${i}
   out=files/out${i}
   tmp=tmp
-  ./lpc $in $tmp
+  ./lcp $in $tmp
   diff -q $tmp $out
   if [ $? -eq 0 ]
   then
