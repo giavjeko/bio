@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "io.c"
-#include "bwt.c"
+#include "sais.c"
 #include "wtree.c"
 #include "queue.c"
 
@@ -32,6 +32,20 @@ void compute_lcp(Wtree* wtree, int* dst, int len) {
     }
     list_destroy(list);
   }
+}
+
+void bwt_transform(char* string, char* result, int len) {
+  int i;
+  int* A = (int*)malloc(len * sizeof(int));
+  int eof_pos = sais_bwt(string, result, A, len);
+  assert(eof_pos > 0);
+  char eof = result[0];
+  for (i = 0; i < eof_pos - 1; i++) {
+    result[i] = result[i+1];
+  }
+  result[eof_pos - 1] = eof;
+  result[len] = 0;
+  free(A);
 }
 
 void process(char* string, int* result, int len) {
