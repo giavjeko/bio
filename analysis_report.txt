@@ -1,99 +1,99 @@
 Test case 1, 10000 characters
 Burrows-Wheeler transform
-Time:     0.003 s
+Time:     0.000 s
 Memory:  1 MB
 Wavelet tree construction
 Time:     0.000 s
 Memory:  1 MB
 LPC
-Time:     0.037 s
+Time:     0.033 s
 Memory:  1 MB
 
 Test case 2, 50000 characters
 Burrows-Wheeler transform
-Time:     0.033 s
-Memory:  2 MB
+Time:     0.013 s
+Memory:  1 MB
 Wavelet tree construction
-Time:     0.007 s
+Time:     0.010 s
 Memory:  1 MB
 LPC
-Time:     0.197 s
+Time:     0.167 s
 Memory:  2 MB
 
 Test case 3, 100000 characters
 Burrows-Wheeler transform
-Time:     0.070 s
-Memory:  3 MB
+Time:     0.023 s
+Memory:  1 MB
 Wavelet tree construction
 Time:     0.017 s
 Memory:  1 MB
 LPC
-Time:     0.400 s
+Time:     0.340 s
 Memory:  3 MB
 
 Test case 4, 200000 characters
 Burrows-Wheeler transform
-Time:     0.150 s
-Memory:  4 MB
+Time:     0.053 s
+Memory:  2 MB
 Wavelet tree construction
 Time:     0.037 s
 Memory:  1 MB
 LPC
-Time:     0.820 s
+Time:     0.700 s
 Memory:  5 MB
 
 Test case 5, 300000 characters
 Burrows-Wheeler transform
-Time:     0.230 s
-Memory:  6 MB
+Time:     0.077 s
+Memory:  3 MB
 Wavelet tree construction
-Time:     0.053 s
+Time:     0.057 s
 Memory:  1 MB
 LPC
-Time:     1.257 s
+Time:     1.057 s
 Memory:  7 MB
 
 Test case 6, 400000 characters
 Burrows-Wheeler transform
-Time:     0.313 s
-Memory:  8 MB
-Wavelet tree construction
-Time:     0.077 s
+Time:     0.107 s
 Memory:  3 MB
+Wavelet tree construction
+Time:     0.073 s
+Memory:  1 MB
 LPC
-Time:     1.700 s
+Time:     1.417 s
 Memory:  9 MB
 
 Test case 7, 500000 characters
 Burrows-Wheeler transform
-Time:     0.400 s
-Memory:  10 MB
+Time:     0.133 s
+Memory:  4 MB
 Wavelet tree construction
-Time:     0.090 s
-Memory:  3 MB
+Time:     0.093 s
+Memory:  2 MB
 LPC
-Time:     2.137 s
-Memory:  13 MB
+Time:     1.790 s
+Memory:  11 MB
 
 Test case 8, 700000 characters
 Burrows-Wheeler transform
-Time:     0.583 s
-Memory:  15 MB
+Time:     0.203 s
+Memory:  5 MB
 Wavelet tree construction
 Time:     0.130 s
 Memory:  2 MB
 LPC
-Time:     3.027 s
+Time:     2.533 s
 Memory:  15 MB
 
 Test case 9, 1000000 characters
 Burrows-Wheeler transform
-Time:     0.853 s
-Memory:  21 MB
+Time:     0.293 s
+Memory:  7 MB
 Wavelet tree construction
-Time:     0.187 s
+Time:     0.180 s
 Memory:  2 MB
 LPC
-Time:     4.333 s
-Memory:  22 MB
+Time:     3.687 s
+Memory:  20 MB
 
