@@ -7,7 +7,6 @@ void io_str_input(char* filename, char** dst, int* len) {
   FILE* file = fopen(filename, "r");
   fseek(file, 0, SEEK_END);
   *len = ftell(file); // in linux " - 1" should be removed because windows makes new line in file with 2 character: \r\n 
-  printf("%d\n",*len);
   fseek(file, 0, SEEK_SET);
   *dst = (char*)malloc((*len + 1) * sizeof(char));
   fscanf(file, "%s", *dst);
