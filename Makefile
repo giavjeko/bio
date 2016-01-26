@@ -1,8 +1,8 @@
 GCC=gcc -Wall
-EXE=lpc
+EXE=lcp
 
 all: io set bitvector sais wtree queue list
-	${GCC} lpc.c -o ${EXE}
+	${GCC} lcp.c -o ${EXE}
 
 test: set.test bitvector.test tree.test queue.test list.test
 
@@ -34,6 +34,8 @@ bitvector.test: bitvector bitvector_test.c
 
 sais: sais.c
 	${GCC} -c sais.c
+bwt.analysis: sais bwt_analysis.c
+	${GCC} bwt_analysis.c -o bwt_analysis
 
 list: list.c
 	${GCC} -c list.c

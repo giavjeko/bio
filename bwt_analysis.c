@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "io.c"
-#include "bwt.c"
+#include "sais.c"
 
 int main(int argc, char** argv) {
   if (argc != 2) {
@@ -14,7 +14,8 @@ int main(int argc, char** argv) {
 
   io_str_input(input_path, &string, &len);
   char* bwt = (char*)malloc((len + 1) * sizeof(char));
-  bwt_transform(string, bwt, len);
+  int* A = (int*)malloc(len * sizeof(int));
+  sais_bwt(string, bwt, A, len);
 
   return 0;
 }
