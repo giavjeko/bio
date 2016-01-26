@@ -6,7 +6,8 @@
 
 // Generate all rotations of src string and store them into dst matrix
 void bwt_generate_rotations(char* src, char** dst, int len) {
-  for (int i = 0; i < len; i++) {
+  int i = 0;
+  for (i = 0; i < len; i++) {
     dst[i] = src + i;
   }
 }

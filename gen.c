@@ -10,7 +10,8 @@ void get_sample(char* src, int src_len, char* dst, int dst_len) {
   assert(dst_len <= src_len);
   int segment_len = src_len / dst_len;
   int dst_index = 0;
-  for (int i = 0; i <= src_len; i+= segment_len) {
+  int i = 0;
+  for (i = 0; i <= src_len; i+= segment_len) {
     int offset = rand() % segment_len;
     dst[dst_index++] = src[i + offset];
   }
@@ -32,7 +33,8 @@ int main(int argc, char** argv) {
 
   FILE* file = fopen(output, "w");
   srand(time(0));
-  for (int i = 0; i < total_len; i++) {
+  int i = 0;
+  for (i = 0; i < total_len; i++) {
     int index = rand() % sample_len;
     char ch = sample[index];
     fputc(ch, file);
